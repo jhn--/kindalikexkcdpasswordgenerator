@@ -51,17 +51,17 @@ def get_words():
             _ALPHABET[i] = [x.strip('\n') for x in words if x[0] == i and len(x) <= 6]
 
 def main(w):
-    print(f'{w}')
+    # print(f'{w}')
 
     get_words()
 
-    for i in _ALPHABET.keys():
-        print(f'{len(_ALPHABET[i])}')
+    # for i in _ALPHABET.keys():
+    #     print(f'{len(_ALPHABET[i])}')
     
     for i in w:
         _PASSWORD.append(_ALPHABET[i][randrange(len(_ALPHABET[i]))])
     
-    print(_PASSWORD)
+    print(f'Password generated: {(" ").join(_PASSWORD)}')
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
