@@ -2,27 +2,32 @@
 
 from random import randrange
 import argparse
+import requests
 
 _ALPHABET = {}
 
 _PASSWORD = []
 
+_WORD_LIST_URL = "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"
+
 
 def get_words(word_set: set, num_of_letters: int) -> dict:
     """Accepts a set() of alphabets and populates the _global_ dictionary, `_ALPHABET` 
-    with words from `word_alpha.txt` that start with the alphabets with letter cound not more than 
+    with words from `_WORD_LIST_URL` that start with the alphabets with letter cound not more than 
     the maximum number of letters defined by `num_of_letters`.
 
     Args: 
         word_set (set): A set() of alphabets split from word.
         num_of_letters (int): Number of letters new random words can have up to.
     """
-    with open('./words_alpha.txt', 'r') as fp:
-        words = fp.readlines()
-
-        for i in word_set:
-            _ALPHABET[i] = [x.strip('\n')
-                            for x in words if x[0] == i and len(x) <= num_of_letters]
+    try:
+        r = requests.get(_WORD_LIST_URL)
+    except Exception as e:
+        raise e
+    else:
+        for letter in word_set:
+            _ALPHABET[letter] = [word for word in r.text.split(
+                '\r\n') if word[0] == letter and len(word) <= num_of_letters]
 
 
 def check_num_of_letters(num_of_letters: int) -> int:
